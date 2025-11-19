@@ -1,123 +1,147 @@
 🔹 1. API 통신 구조 (FetchClient)
 
-목적: 인증 포함 fetch 요청을 공통화하여 일관된 API 통신 유지
+사용 기술
 
-구성
+fetch, async/await, RequestInit, Headers
 
-FetchClient 클래스: get, post, patch, delete 메서드 제공
+쿠키 기반 인증 처리 (getCookie)
 
-자동 토큰 갱신 (401 Unauthorized 발생 시 refresh_token 요청 후 재시도)
+토큰 만료 시 자동 재요청 (refresh_token 기반)
 
-쿼리 파라미터 직렬화 처리
+기술 포인트
 
-기술: fetch, getCookie, Headers, 재귀적 재시도 처리
+재시도 로직 (retryCount) 구현
+
+공통 API client 클래스화 (get/post/patch/delete)
+
+인증 여부 및 content-type 유연 설정
 
 🔹 2. 퀴즈 기능
 
-목적: 콘텐츠별 OX 퀴즈 풀이 및 정답 피드백 제공
+사용 기술
 
-구성
+React useState/useEffect
 
-API: 퀴즈 조회(GET), 정답 제출(POST)
+커스텀 훅 useQuiz, usePreventNavigation
 
-컴포넌트: QuizContainer, QuizCard, QuizAnswer, QuizLoading
+조건부 렌더링 (QuizCard ↔ QuizAnswer)
 
-커스텀 훅: useQuiz, usePreventNavigation (페이지 이탈 방지)
+API: GET /quiz, POST /quiz
 
-기술: useState, useEffect, map, axios, 조건부 렌더링, 사용자 피드백
+기술 포인트
 
-🔹 3. 추천 기능 (강의 & 전문가)
+정답 제출 후 화면 전환 및 스크롤 리셋 처리
 
-목적: 콘텐츠 기반 유사 강의/전문가 추천 제공
+페이지 이탈 방지 (뒤로가기/링크 차단 → Dialog 처리)
 
-구성
+selected, isCompleted, hasAnswered 상태를 별도로 관리하여 UX 최적화
 
-API: /recommendations, /expert-recommendations
+🔹 3. 강의/전문가 추천 기능
 
-컴포넌트: Lecture, Expert, LectureCard, ExpertCard
+사용 기술
 
-커스텀 훅: usePagination을 통한 페이지네이션
+RESTful API 호출 (쿼리 스트링 기반)
 
-기술: fetch, query string 구성, 반응형 카드 UI, 리스트 렌더링
+커스텀 훅 usePagination
 
-🔹 4. 스냅리뷰 기능 (MVP)
+반응형 카드 UI (LectureCard, ExpertCard)
 
-목적: 콘텐츠별 주요 영상 장면을 이미지와 코멘트로 기록 및 편집
+기술 포인트
 
-구성
+URLSearchParams로 필터링 파라미터 처리
 
-API: 스냅리뷰 조회(GET), 코멘트 수정(PATCH)
+params.get()을 통해 동적 endpoint 분기 처리
 
-컴포넌트: ReviewCard, ReviewTextField, ReviewWriteButton
+keyword 기반 강조 UI 및 비동기 에러 핸들링
 
-유틸: 최대 글자 수 제한, TimeStamp 클릭으로 영상 이동 유도
+🔹 4. 스냅리뷰 (프레임별 설명 기능)
 
-기술: useState, 리스트 매핑, textarea 이벤트 처리, 입력 유효성
+사용 기술
 
-🔹 5. 스냅리뷰 목록 (무한 스크롤)
+useEffect, useState를 통한 로컬 상태 관리
 
-목적: 날짜별 그룹화된 스냅리뷰 리스트 조회
+PATCH /snap-review API로 부분 업데이트
 
-구성
+코멘트 입력창 → 실시간 바인딩 및 Enter 저장
 
-API: getSnapReviews (페이지네이션 기반)
+기술 포인트
 
-컴포넌트: SnapList, SnapDateGroup, SnapCard
+리뷰 1건마다 개별 수정 가능 (editingId 기반 제어)
 
-커스텀 훅: useInfiniteScroll (IntersectionObserver 기반)
+MAX_SNAP_REVIEW_LENGTH로 글자 수 제한 UX 제공
 
-기술: react-query, IntersectionObserver, flatMap, 날짜 포맷 정렬
+이미지 클릭 시 TimeStamp 처리로 영상 이동 가능
+
+🔹 5. 스냅리뷰 목록 기능 (무한 스크롤)
+
+사용 기술
+
+@tanstack/react-query 기반 useInfiniteQuery
+
+커스텀 훅 useInfiniteScroll
+
+IntersectionObserver API
+
+기술 포인트
+
+observerTarget ref 관리 → 뷰포트 진입 시 다음 페이지 호출
+
+날짜별 리뷰 그룹화 → SnapDateGroup에서 reduce + 정렬 처리
+
+초기 로딩/빈 리스트/에러 상태까지 완전 대응
 
 🔹 6. 스냅리뷰 공유 기능
 
-목적: 스냅리뷰를 링크 형태로 외부 사용자에게 공유
+사용 기술
 
-구성
+공유 코드 API (GET/POST /share-code)
 
-API: 공유 코드 생성(GET/POST), 코드 기반 조회(GET), 삭제(DELETE)
+클립보드 복사 (navigator.clipboard)
 
-컴포넌트:
+공유 링크 기반 접근 페이지 (SharedSnapBookPage)
 
-SnapBookContent: 공유버튼 포함 상세 뷰
+기술 포인트
 
-SharedSnapBookPage: 외부 공유 접근 시 리뷰 렌더링
+링크 클릭 시 modal로 공유 다이얼로그 노출
 
-Share, ShareButton, Review
+공유 코드 존재 여부 확인 후 없으면 자동 생성
 
-기술: 클립보드 복사, 다이얼로그 처리, 조건부 렌더링, fetch
+리뷰 렌더링 시 이미지 hover 시 comment 오버레이 UI 처리
 
-🔹 7. 관리자 기능 - 로그인 및 인증
+🔹 7. 관리자 로그인 / 인증
 
-목적: 관리자만 접근 가능한 전략 대시보드 인증 처리
+사용 기술
 
-구성
+FormData, fetch, 쿠키 기반 로그인 처리
 
-API Route: /api/auth/admin, /auth/me
+서버 측 토큰 저장 (setCookie 사용)
 
-컴포넌트: LoginForm, InputField, AuthCallback
+AuthCallback → 로그인 후 리다이렉트
 
-로그인 성공 시 대시보드로 리다이렉션 처리
+기술 포인트
 
-기술: FormData, fetch, useRouter, accessToken 저장 (setCookie)
+GET /auth/me로 role 확인 후 접근 제어
 
-🔹 8. 관리자 대시보드 (전략 차트)
+로그인 실패 시 BasicToaster로 UX 피드백 처리
 
-목적: 플랫폼 주요 지표 시각화(전환율, 학습률 등)
+로그인 성공 시 /admin/strategyboard 자동 이동
 
-구성
+🔹 8. 관리자 전략 대시보드 (차트)
 
-API: 지표별 /admin/strategy/... 엔드포인트
+사용 기술
 
-컴포넌트:
-
-StrategyBoardPage: 전체 구조
-
-TopCharts, BottomChart: 주요 지표별 그래프
-
-CurveGraphCard: 커스텀 라인 차트
-
-DateRangeSelector: 날짜 범위 설정
+react-chartjs-2, chart.js, date-fns, react-date-range
 
 커스텀 훅: useStrategyData
 
-기술: chart.js, react-chartjs-2, date-fns, 반응형 차트, 그래프 설명 툴팁
+컴포넌트 분리: DateRangeSelector, TopCharts, BottomChart
+
+기술 포인트
+
+날짜별/옵션별 API 통합 관리 및 병렬 처리
+
+차트 색상은 순환 컬러 팔레트로 가독성 향상
+
+Y축 0 고정 및 최소 마크 수 지정
+
+10개 이상 데이터 → 가로 스크롤 자동 적용 (min-w-[1200px])
