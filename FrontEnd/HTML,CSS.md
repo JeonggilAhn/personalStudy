@@ -38,7 +38,7 @@
 
 ## Flex Container 속성
 - `display: flex`
-- `flex-direction`  
+- `flex-direction`
 - `justify-content`
 - `align-items`
 - `flex-wrap`
@@ -47,6 +47,11 @@
 - `flex-grow` : 남는 공간 확장 비율
 - `flex-shrink` : 줄어드는 비율
 - `flex-basis` : 기본 크기
+
+## 특징
+- 상위 컨테이너(Flex Container)와 하위 요소(Flex Item)로 구성
+- 다양한 화면 환경에서 레이아웃 안정적 유지
+- 정렬, 순서, 공간 배분 용이
 
 ---
 
@@ -89,10 +94,10 @@
 
 # 7. Float
 
-요소를 좌/우로 띄워 다른 요소가 흐르도록 하는 방식(과거 레이아웃 방식).
+요소를 좌/우로 띄워 다른 요소가 흐르도록 하는 방식.
 
 - `float: left/right`
-- 뒤 요소가 따라붙는 문제 → `clear: both` 등으로 해결
+- 뒤 요소가 따라붙는 문제 → `clear: both`로 해결
 - 현재는 flex, grid가 대체
 
 ---
@@ -131,7 +136,7 @@
 ### 성능 최적화 팁
 - `transform`, `opacity` 중심으로 애니메이션 처리
 - `top/left` 대신 `translate` 사용
-- 필요할 경우 `will-change`로 레이어 생성
+- 필요 시 `will-change`로 레이어 생성
 
 ---
 
@@ -162,9 +167,3 @@
     flex-direction: column;
   }
 }
-```
-## 기본 사용 패턴
-
-- max-width : 모바일 우선(Mobile First)
-
-- min-width : 데스크탑 우선
