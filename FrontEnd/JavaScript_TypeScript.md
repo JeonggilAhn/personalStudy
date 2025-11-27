@@ -1,396 +1,299 @@
-# 1. Sync vs Async
-
-## Sync(동기)
-- 요청을 보낸 뒤 응답을 받을 때까지 기다림
-- 다음 작업은 그 이후에 실행
-- 대표 예: alert() (Blocking)
-- 특징:
-  - 순차적 실행 보장
-  - 코드 이해가 직관적
-  - 비동기 처리 불가 → UI 블로킹 가능
-
-## Async(비동기)
-- 요청을 보낸 뒤 응답을 기다리지 않고 다음 코드 실행
-- 대표 예: setTimeout, fetch (Non-blocking)
-- 특징:
-  - 동시성 처리 가능
-  - UI 블로킹 최소화
-  - 콜백, Promise, async/await 활용
-
-### 정리
-- Sync: 순차 실행
-- Async: 응답 여부와 상관없이 다음 작업 진행
+# JavaScript & TypeScript 핵심 개념 정리
 
 ---
 
-# 2. Blocking vs Non-Blocking
+## 1. Sync vs Async
 
-## Blocking
-- 작업이 완료될 때까지 **제어권이 해당 작업에 묶임**
-- 다른 작업은 대기 상태
-- 대표 예: alert(), 동기적 I/O
-- 특징:
-  - 동기적 처리
-  - CPU와 스레드가 결과 기다림
-  - UI가 멈출 수 있음
-
-## Non-Blocking
-- 작업이 완료되지 않아도 **즉시 제어권 반환**
-- 다른 작업을 계속 수행 가능
-- 대표 예: fetch, setTimeout, 비동기 파일 I/O
-- 특징:
-  - 비동기적 처리
-  - 이벤트/콜백 큐 통해 나중에 처리
-  - CPU 활용 효율 증가
-
-### 차이
-| 구분 | Blocking | Non-Blocking |
-|------|----------|--------------|
-| 처리 방식 | 동기 | 비동기 |
-| 제어권 | 작업 완료까지 묶임 | 즉시 반환 |
-| CPU 활용 | 대기 중 비효율 | 효율적 |
-| 예시 | alert(), sync I/O | fetch(), setTimeout |
+- **Sync(동기)**: 요청을 보내고 응답이 올 때까지 기다리는 방식. 순차적으로 처리됨.  
+  - 예: `alert()`
+- **Async(비동기)**: 요청을 보낸 뒤 응답을 기다리지 않고 다음 작업 실행. UI 블로킹 최소화.  
+  - 예: `setTimeout()`, `fetch()`
 
 ---
 
-# 3. Callback & Callback Hell
+## 2. Blocking vs Non-Blocking
 
-## Callback
-- 다른 함수의 인자로 전달되어 실행되는 함수
-- 비동기 작업 결과 처리에 사용
-- 예: `fs.readFile(path, callback)`
-
-## Callback Hell
-- 콜백 중첩으로 가독성 저하, 유지보수 어려움
-- 예: `a(b(c(d())))`
-
-### 해결 방법
-- 콜백 분리 (named function)
-- Promise 체인
-- async/await
+- **Blocking**: 작업 완료 전까지 제어권이 해당 작업에 묶임. 다음 작업은 대기.  
+- **Non-Blocking**: 작업 완료 여부와 상관없이 다음 작업 수행 가능. 이벤트 큐로 처리.
 
 ---
 
-# 4. Event Loop
+## 3. Callback & Callback Hell
 
-자바스크립트 비동기 처리 핵심 메커니즘
-
-## 구성 요소
-- Call Stack: 현재 실행 중인 함수 스택
-- Microtask Queue: Promise.then, async/await
-- Macrotask Queue: setTimeout, setInterval, DOM 이벤트 등
-
-## 동작 원리
-1. Call Stack이 비면
-2. Microtask Queue 우선 처리
-3. Macrotask Queue 처리
-- 특징:
-  - 단일 스레드 기반
-  - 비동기 작업 순서 보장
+- **Callback**: 함수의 인자로 전달되어 특정 이벤트나 작업 후 실행되는 함수.  
+- **Callback Hell**: 콜백 중첩으로 코드 가독성이 떨어지는 현상.  
+  - **해결**: 함수 분리, Promise, Async/Await
 
 ---
 
-# 5. Promise vs Async/Await
+## 4. Event Loop
 
-## Promise
-- 비동기 작업을 객체로 처리
-- `.then()`, `.catch()` 체인 활용
-- 예: `fetch(url).then(res => res.json())`
-
-## Async/Await
-- Promise 기반을 동기처럼 작성 가능
-- try/catch로 예외 처리
-- 예: `const data = await fetcher(url)`
+- JS의 비동기 처리 핵심 메커니즘. 단일 스레드 기반.  
+- **구성요소**: Call Stack, Microtask Queue(Promise, async/await), Macrotask Queue(setTimeout 등)  
+- **동작**: Call Stack → Microtask → Macrotask 순으로 처리
 
 ---
 
-# 6. map vs forEach
+## 5. Promise vs Async/Await
+
+- **Promise**: 비동기 작업 결과 처리 객체. `.then()`, `.catch()` 사용  
+- **Async/Await**: Promise 기반 동기형 코드 작성 가능, `try/catch`로 에러 처리
+
+---
+
+## 6. map vs forEach
 
 | 구분 | map | forEach |
 |------|-----|---------|
-| 반환 값 | 새로운 배열 반환 | 반환값 없음 |
+| 반환 | 새로운 배열 | 없음 |
 | 원본 변경 | ❌ | 가능 |
 | 체이닝 | 가능 | 불가능 |
 
 ---
 
-# 7. var, let, const 차이
+## 7. var, let, const
 
-| 키워드 | 스코프 | 재할당 | 재선언 | 특징 |
+| 키워드 | 스코프 | 재선언 | 재할당 | 특징 |
 |--------|--------|---------|---------|------|
-| var | 함수 | 가능 | 가능 | 호이스팅 시 undefined |
-| let | 블록 | 가능 | 불가능 | TDZ 존재 |
-| const | 블록 | 불가능 | 불가능 | TDZ 존재 |
+| var    | 함수   | 가능    | 가능    | 호이스팅 시 초기값 `undefined` |
+| let    | 블록   | 불가    | 가능    | TDZ 존재 |
+| const  | 블록   | 불가    | 불가    | TDZ 존재 |
 
 ---
 
-# 8. 메서드 체이닝
-- 반환값으로 자기 자신(this) 또는 객체 반환
+## 8. 메서드 체이닝
+
+- 자기 자신(this) 또는 객체를 반환해 연속 호출 가능  
+- 장점: 코드 간결, 단점: 에러 발생 위치 확인 어려움  
 - 예: `array.map().filter().reduce()`
-- 장점: 코드 간결, 연속 처리 용이
 
 ---
 
-# 9. 일반 함수 vs 화살표 함수
+## 9. 일반 함수 vs 화살표 함수
 
-## 일반 함수
-- this: 동적 바인딩
-- arguments 사용 가능
-- new로 생성자 가능
-
-## 화살표 함수
-- this: 상위 스코프(this) 바인딩
-- arguments 없음
-- new 생성자 사용 불가
-
----
-
-# 10. this
-
-- 생성자 함수 → 새 인스턴스
-- 객체 메서드 → 해당 객체
-- call/apply/bind → 명시적 바인딩
-- 일반 함수 호출 → 전역 객체
-- 화살표 함수 → 선언 시점 상위 this
+- **일반 함수**
+  - this: 호출 방식에 따라 동적 바인딩  
+  - arguments 사용 가능  
+  - new로 생성자 사용 가능
+- **화살표 함수**
+  - this: 상위 스코프(Lexical this)  
+  - arguments 없음  
+  - 생성자로 사용 불가
 
 ---
 
-# 11. 함수 선언식 vs 함수 표현식
+## 10. this
 
-## 함수 선언식
-- 호이스팅: 선언 전 호출 가능
-
-## 함수 표현식
-- 변수 호이스팅만 발생 → 초기화 전 호출 불가
-
----
-
-# 12. 호이스팅
-- JS 엔진이 변수/함수 선언을 스코프 최상단으로 끌어올린 것처럼 동작
-- let/const: TDZ 존재
-- 함수 선언식: 전체 호이스팅
+- 자신이 속한 객체 또는 생성된 인스턴스 참조  
+- 호출 방식에 따라 바인딩:  
+  1. 생성자 함수 → 인스턴스  
+  2. call/apply/bind → 명시적 객체  
+  3. 객체 메서드 → 해당 객체  
+  4. 일반 함수 → 전역 객체  
+  5. 화살표 함수 → 선언 시점 상위 this
 
 ---
 
-# 13. 이벤트 버블링 & 캡처링
+## 11. 함수 선언식 vs 함수 표현식
 
-## 버블링
-- 이벤트 → 하위 → 상위 전파
-
-## 캡처링
-- 이벤트 → 상위 → 하위 전파
+- **선언식**: 호이스팅 가능, 선언 전 호출 가능  
+- **표현식**: 선언 후 호출 가능, 변수 호이스팅만 발생
 
 ---
 
-# 14. 이벤트 전파 & 이벤트 위임
+## 12. 호이스팅
 
-## 이벤트 전파
-- Capturing → Target → Bubbling
-
-## 이벤트 위임
-- 상위 요소에 이벤트 등록 → 하위 요소 일괄 처리
+- 변수/함수 선언이 스코프 최상단으로 끌어올려지는 것처럼 보이는 현상  
+- let/const는 TDZ 때문에 선언 전 접근 불가, 함수 선언식은 전체 호이스팅
 
 ---
 
-# 15. Closure(클로저)
-- 함수가 선언된 당시의 렉시컬 스코프 기억
-- 외부에서 내부 변수 접근 가능
-- 예: private 변수 구현
+## 13. 이벤트 버블링 & 캡처링
+
+- **버블링**: 이벤트 하위 → 상위 요소 순 전파  
+- **캡처링**: 상위 → 하위 요소 순 전파
 
 ---
 
-# 16. Lexical Scope & Lexical Environment
+## 14. 이벤트 전파 & 이벤트 위임
 
-## Lexical Scope
-- 선언 위치 기준 상위 스코프 결정
-
-## Lexical Environment
-- 스코프 내부 변수/값/체인 정보 담음
+- **전파**: Capturing → Target → Bubbling  
+- **위임**: 하위 요소 이벤트 대신 상위 요소에서 처리
 
 ---
 
-# 17. 실행 컨텍스트
-- 코드 실행 환경
-- Variable Environment
-- Lexical Environment
-- thisBinding
-→ 콜 스택 구조로 관리
+## 15. Closure(클로저)
+
+- 함수가 선언 당시 스코프를 기억  
+- 외부에서도 해당 스코프 접근 가능  
+- 캡슐화/상태 은닉에 활용
 
 ---
 
-# 18. 스코프 & 스코프 체인
+## 16. Lexical Scope & Lexical Environment
 
-## 스코프
-- 변수 참조 유효 범위
-
-## 스코프 체인
-- 현재 → 상위 순서 탐색
+- **Lexical Scope**: 선언 위치 기준 상위 스코프 결정  
+- **Lexical Environment**: 변수, 값, 스코프 체인 정보를 담는 구조
 
 ---
 
-# 19. 프로토타입 & 프로토타입 체인
+## 17. 실행 컨텍스트
 
-## 프로토타입
-- 모든 객체가 상속받는 기본 구조
-
-## 프로토타입 체인
-- 프로퍼티 없으면 prototype 따라 부모 탐색
+- 코드 실행 환경  
+- 구성: Variable Environment, Lexical Environment, ThisBinding  
+- Call Stack으로 관리
 
 ---
 
-# 20. 깊은 복사 vs 얕은 복사
+## 18. 스코프 & 스코프 체인
 
-- 얕은 복사: 참조값만 복사 → 주소 공유
-- 깊은 복사: 새 메모리 생성 → 독립 객체
-
----
-
-# 21. Destructuring
-- 배열·객체 값을 해체하여 변수 할당
-- 예: `const [a,b] = arr` / `const {x,y} = obj`
+- **스코프**: 변수 접근 범위  
+- **스코프 체인**: 현재 → 상위 스코프 순 탐색
 
 ---
 
-# 22. Spread vs Rest
-- Spread: 펼침 → `...arr`
-- Rest: 모음 → `function(...args)`
+## 19. 프로토타입 & 프로토타입 체인
+
+- **프로토타입**: 객체가 상속받는 기본 구조  
+- **체인**: 객체에 프로퍼티 없으면 부모 탐색
 
 ---
 
-# 23. ES6 주요 기능 요약
-- let/const
-- Arrow Function
-- for...of
-- Class
-- Promise
-- Template Literal
-- Default Parameter
-- Rest/Spread
-- Destructuring
-- Generator
-- import/export
+## 20. 깊은 복사 vs 얕은 복사
+
+- **얕은 복사**: 참조 값만 복사, 원본 영향 가능  
+- **깊은 복사**: 새로운 메모리 생성, 독립적
 
 ---
 
-# 24. Ajax
-- XMLHttpRequest 기반 비동기 통신
-- 페이지 새로고침 없이 데이터 송수신
+## 21. Destructuring
+
+- 배열/객체 값을 해체하여 변수에 바로 할당
 
 ---
 
-# 25. import vs require
+## 22. Spread vs Rest
+
+- **Spread**: 값 펼치기 → `...arr`  
+- **Rest**: 값 모음 → `function(...args)`
+
+---
+
+## 23. ES6 주요 기능
+
+- let/const, Arrow Function, for...of, Class, Promise, Template Literal  
+- Default Parameter, Rest/Spread, Destructuring, Generator, import/export
+
+---
+
+## 24. Ajax
+
+- XMLHttpRequest 기반 비동기 통신  
+- 페이지 전체 새로고침 없이 데이터 송수신
+
+---
+
+## 25. import vs require
 
 | 구분 | import | require |
-|------|--------|--------|
+|------|--------|---------|
 | 문법 | ES Module | CommonJS |
 | 로딩 시점 | 정적 | 런타임 |
-| 사용 환경 | FE/BE 모두 | Node.js |
+| 환경 | FE/BE | Node.js |
 | Tree-Shaking | O | X |
 
 ---
 
-# 26. npm
-- Node.js 패키지 매니저
-- 패키지 다운로드, 업데이트, 버전 관리
+## 26. npm
+
+- Node.js 패키지 관리 툴  
+- 패키지 설치, 업데이트, 버전 관리
 
 ---
 
-# 27. package.json / package-lock.json
+## 27. package.json / package-lock.json
 
-## package.json
-- 프로젝트 메타 정보
-- 의존성 기록
-
-## package-lock.json
-- 의존성 정확한 버전 잠금
+- **package.json**: 프로젝트 정보 + 의존성 기록  
+- **package-lock.json**: 의존성 정확한 버전 잠금
 
 ---
 
-# 28. TypeScript를 쓰는 이유
-- 컴파일 단계에서 에러 잡기
-- 타입 기반 자동완성 / 개발 경험 향상
-- 코드 안정성 & 유지보수성 증가
+## 28. TypeScript
+
+- 정적 타입으로 컴파일 단계 오류 잡기  
+- props, 상태, API 응답 타입 명확히 선언 가능  
+- IDE 자동완성/타입체크 → 생산성 증가
+
+### 실무 패턴
+- Interface vs Type, Union/Intersection, Generic, API 타입 설계
 
 ---
 
-# 29. null / undefined / undeclared / NaN
-- null: 개발자가 의도적으로 비어있음을 명시
-- undefined: 선언됐지만 값 없음
-- undeclared: 선언도 안 됨
-- NaN: Number가 아님
+## 29. null / undefined / undeclared / NaN
+
+- null: 의도적 빈 값  
+- undefined: 선언 후 값 없음  
+- undeclared: 선언 없음  
+- NaN: Not a Number
 
 ---
 
-# 30. 데이터 타입
+## 30. 데이터 타입
 
-## 원시 타입
-- boolean, null, undefined, number, string, symbol, bigint
-
-## 참조 타입
-- object, array, function 등
+- **원시 타입**: boolean, null, undefined, number, string, symbol, bigint  
+- **참조 타입**: object, array, function
 
 ---
 
-# 31. Mutable vs Immutable
+## 31. Mutable vs Immutable
 
-## Mutable
-- 값 변경 가능 → 객체, 배열
-
-## Immutable
-- 값 변경 불가 → 새 값 생성
-- 모든 원시 타입
+- **Mutable**: 값 변경 가능, 객체/배열  
+- **Immutable**: 값 변경 불가, 새로운 값 생성, 원시 타입
 
 ---
 
-# 32. Throttle & Debounce
+## 32. Throttle & Debounce
 
-- Throttle: 일정 주기마다 실행
+- Throttle: 일정 주기마다 실행  
 - Debounce: 마지막 호출만 실행
 
 ---
 
-# 33. Iterable / Iterator / Generator
+## 33. Iterable / Iterator / Generator
 
-## Iterable
-- 순회 가능한 객체(Symbol.iterator 보유)
-
-## Iterator
-- next() → {value, done}
-
-## Generator
-- function* 문법
-- 실행 중단/재개 가능
-
-──────────────────────────────
-TypeScript
-──────────────────────────────
-
-# TypeScript 사용 경험
-- 정적 타입으로 **컴파일 단계에서 오류 포착**
-- props, 상태, API 응답 타입 명확 선언 → 가독성/유지보수성 향상
-- 대규모 리팩토링 안정적
-- IDE 자동완성/타입체크 → 개발 생산성 향상
+- **Iterable**: 순회 가능 객체 (`Symbol.iterator`)  
+- **Iterator**: 반복 인터페이스, `next()` 사용  
+- **Generator**: iterator 생성 함수, 실행 중단/재개 가능
 
 ---
 
-# TypeScript 특징
-- 정적 타이핑
-- 클래스/인터페이스/제네릭 등 객체지향 지원
-- 기존 JS 프로젝트 점진적 도입 가능
-- tsconfig.json으로 strict, target, moduleResolution 제어
+## 34. 자바스크립트 동작 원리
+
+- 싱글 스레드, V8 엔진 기반  
+- **Memory Heap**: 메모리 할당  
+- **Call Stack**: 코드 실행 스택  
+- **Web APIs + Callback Queue + Event Loop** → 비동기 처리 가능
 
 ---
 
-# 실무 자주 쓰는 패턴
+## 35. OOP 특징
 
-## Interface vs Type
-- interface: 객체 형태 선언 + 확장 용이
-- type: 유니언/인터섹션 등 고급 타입 조합
+- 객체 추상화, 상태+행위, 재사용성 높음  
+- 클래스, 객체, 상속, 캡슐화 활용  
+- 단점: 처리속도 느림, 객체 많으면 용량 증가
 
-## Union / Intersection
-- Union (A | B): 여러 타입 중 하나
-- Intersection (A & B): 두 타입 모두 만족
+---
 
-## Generic
-```ts
-function identity<T>(arg: T): T { return arg }
+## 36. '==' vs '==='
+
+- `==`: 타입 변환 후 값 비교  
+- `===`: 타입 + 값 모두 동일해야 true
+
+---
+
+## 37. Map vs Set
+
+- **Map**: key-value 쌍, 순서 유지, key 제한 없음  
+- **Set**: 중복 불가, key 없음, 값 판단 효율적
+
+---
